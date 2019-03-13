@@ -1,7 +1,9 @@
 const { validate } = require('indicative');
 
 class Validator {
-  constructor(options = {}) {
+  constructor(options = {}, formatter = null) {
+    this.formatter = formatter;
+
     this.defaultMessages = {
       required: '{{ field }} is required.'
     };
@@ -46,7 +48,7 @@ class Validator {
     }
 
     try {
-      await validate(data, rules, customMessages);
+      await validate(data, rules, customMessages, this.formatter);
       return Promise.resolve(true);
     } catch (errors) {
       const attributeKeys = Object.keys(customAttributes);
